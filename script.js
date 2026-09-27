@@ -5,8 +5,13 @@ const expenseAmount = document.getElementById("expense-amount");
 const expenseList = document.getElementById("expense-list");
 
 addExpenseButton.addEventListener("click", function() {
-    const name = expenseName.value;
+    const name = expenseName.value.trim();
     const amount = expenseAmount.value;
+
+    if (name === "" || amount === "") {
+        alert("Please enter both an expense name and an amount.");
+        return;
+    }
 
     const listItem = document.createElement("li");
     listItem.textContent = name + " - $" + amount;
