@@ -1,15 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Expense Tracker</title>
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <h1>Expense Tracker</h1>
-        <p>Track your daily expenses.</p>
-        <input type="text" id="expense-name" placeholder="Expense Name"> 
-        <input type="number" id="expense-amount" placeholder="Amount" step="0.01">
-        <button id="add-expense">Add Expense</button> 
-        <ul id="expense-list"></ul>
+        <!-- Top navigation: brand and tabs on the left, theme toggle on the right -->
+        <header class="navbar">
+            <div class="nav-left">
+                <div class="brand">Expense Tracker</div>
+                <nav class="nav-tabs">
+                    <button class="nav-tab active" data-page="expenses" aria-current="page">Expenses</button>
+                    <button class="nav-tab" data-page="bills">Bills</button>
+                    <button class="nav-tab" data-page="activities">Activities</button>
+                </nav>
+            </div>
+            <button id="theme-toggle" class="btn btn-secondary" aria-label="Toggle dark mode">🌙</button>
+        </header>
+
+        <main>
+            <!-- Expenses page -->
+            <section class="page" id="page-expenses">
+                <!-- The header band spans the full width; its text lines up with the content below -->
+                <div class="page-header">
+                    <div class="container">
+                        <h1>Expenses</h1>
+                        <p>Track your daily expenses.</p>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="expenses-layout">
+                        <!-- Left column: spending pie chart -->
+                        <aside class="card chart-card">
+                            <h2 class="card-title">Spending</h2>
+                            <div id="spending-chart" class="pie-chart" role="img" aria-label="No spending yet"></div>
+                            <p class="chart-total">Total: <strong id="spending-total">$0.00</strong></p>
+                            <ul id="chart-legend" class="chart-legend"></ul>
+                        </aside>
+
+                        <!-- Right column: form and expense table -->
+                        <div class="expenses-main">
+                            <form id="expense-form" class="expense-form">
+                                <input type="text" id="expense-name" placeholder="Expense Name">
+                                <input type="number" id="expense-amount" placeholder="Amount" step="0.01">
+                                <button type="submit" id="add-expense" class="btn btn-primary">Add Expense</button>
+                            </form>
+
+                            <div class="card">
+                                <!-- Scrolls sideways if the table is ever wider than the screen -->
+                                <div class="table-scroll">
+                                <table class="expense-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th class="col-amount">Amount</th>
+                                            <th class="col-actions">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="expense-list"></tbody>
+                                </table>
+                                </div>
+                                <p id="empty-state" class="empty-state">No expenses yet. Add one above to get started.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bills page (placeholder) -->
+            <section class="page" id="page-bills" hidden>
+                <div class="page-header">
+                    <div class="container">
+                        <h1>Bills</h1>
+                        <p>Keep track of recurring bills.</p>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="card placeholder">Coming soon.</div>
+                </div>
+            </section>
+
+            <!-- Activities page (placeholder) -->
+            <section class="page" id="page-activities" hidden>
+                <div class="page-header">
+                    <div class="container">
+                        <h1>Activities</h1>
+                        <p>See your recent activity.</p>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="card placeholder">Coming soon.</div>
+                </div>
+            </section>
+        </main>
+
         <script src="script.js"></script>
     </body>
 </html>

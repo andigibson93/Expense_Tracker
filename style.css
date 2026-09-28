@@ -1,0 +1,467 @@
+/* ==========================================================
+   1. Color variables
+   Every color lives here. Dark mode re-defines the same names,
+   so the rest of the file never needs to know which theme is on.
+   ========================================================== */
+:root {
+    --bg: #f4f6fa;
+    --surface: #ffffff;
+    --surface-muted: #f8f9fc;
+    --text: #1f2937;
+    --text-muted: #6b7280;
+    --border: #e3e7ee;
+    --accent: #3b6fe0;
+    --accent-dark: #2c56b8;
+    --danger: #d9443c;
+    --danger-dark: #b5332c;
+    --shadow: 0 1px 3px rgba(16, 24, 40, 0.08);
+}
+
+[data-theme="dark"] {
+    --bg: #12151c;
+    --surface: #1b1f29;
+    --surface-muted: #222734;
+    --text: #e6e9ef;
+    --text-muted: #9aa3b2;
+    --border: #2e3442;
+    --accent: #5b8cff;
+    --accent-dark: #3f6fe0;
+    --danger: #ef5b52;
+    --danger-dark: #cc4139;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================================
+   2. Base and layout
+   ========================================================== */
+* {
+    box-sizing: border-box;
+}
+
+/* Make sure anything with the "hidden" attribute stays hidden,
+   even if a class below gives it a display value. */
+[hidden] {
+    display: none !important;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+/* ==========================================================
+   3. Navbar
+   ========================================================== */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+/* Groups the brand and the tabs together on the left */
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+}
+
+.brand {
+    font-size: 1.15rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* The left border is the subtle divider between the brand and the tabs */
+.nav-tabs {
+    display: flex;
+    gap: 4px;
+    padding-left: 16px;
+    border-left: 1px solid var(--border);
+}
+
+.nav-tab {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-muted);
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.nav-tab:hover {
+    color: var(--text);
+    background: var(--surface-muted);
+}
+
+.nav-tab.active {
+    color: var(--accent);
+    background: var(--surface-muted);
+    font-weight: 600;
+}
+
+/* ==========================================================
+   4. Page headers
+   A full-width neutral band. The .container inside it lines
+   the text up with the page content below.
+   ========================================================== */
+.page-header {
+    background: linear-gradient(to bottom, var(--surface), var(--surface-muted));
+    border-bottom: 1px solid var(--border);
+}
+
+.page-header .container {
+    padding-top: 28px;
+    padding-bottom: 28px;
+}
+
+.page-header h1 {
+    margin: 0 0 4px;
+    font-size: 1.6rem;
+}
+
+.page-header p {
+    margin: 0;
+    color: var(--text-muted);
+}
+
+/* ==========================================================
+   4b. Expenses page layout and pie chart
+   ========================================================== */
+/* Two columns: the right one (form and table) is twice as wide as the chart.
+   minmax(0, ...) lets the columns shrink instead of overflowing. */
+.expenses-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: 20px;
+    align-items: start;
+}
+
+.chart-card {
+    padding: 20px;
+}
+
+.card-title {
+    margin: 0 0 16px;
+    font-size: 1rem;
+}
+
+/* The slices are drawn by script.js, which sets a conic-gradient background */
+.pie-chart {
+    width: 100%;
+    max-width: 220px;
+    aspect-ratio: 1;
+    margin: 0 auto;
+    border-radius: 50%;
+    background: var(--surface-muted);
+    border: 1px solid var(--border);
+}
+
+.chart-total {
+    margin: 16px 0 12px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.chart-total strong {
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+}
+
+.chart-legend {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 220px;
+    overflow-y: auto;
+    font-size: 0.9rem;
+}
+
+.chart-legend li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+}
+
+.legend-swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+/* Long names are cut off with "..." instead of pushing the layout wider */
+.legend-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.legend-percent {
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================
+   5. Expense form
+   ========================================================== */
+.expense-form {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.expense-form #expense-name {
+    flex: 2;
+}
+
+.expense-form #expense-amount {
+    flex: 1;
+}
+
+input {
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+    min-width: 0; /* lets inputs shrink inside flex rows */
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(59, 111, 224, 0.25);
+}
+
+/* ==========================================================
+   6. Expense table
+   ========================================================== */
+/* The card hides overflow to keep its rounded corners,
+   so this inner wrapper scrolls sideways instead of cutting the table off. */
+.table-scroll {
+    overflow-x: auto;
+}
+
+.expense-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.expense-table th,
+.expense-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+.expense-table th {
+    background: var(--surface-muted);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.expense-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.expense-table tbody tr:hover {
+    background: var(--surface-muted);
+}
+
+/* Right-align numbers so the digits line up */
+.col-amount {
+    text-align: right !important;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.col-actions {
+    text-align: right !important;
+    white-space: nowrap;
+    width: 1%; /* shrink this column to fit its buttons */
+}
+
+.col-actions .btn + .btn {
+    margin-left: 6px;
+}
+
+/* Inputs shown inside a row while editing */
+.row-input {
+    width: 100%;
+    min-width: 100px; /* keeps the name box usable on narrow screens */
+    padding: 6px 8px;
+}
+
+.col-amount .row-input {
+    max-width: 120px;
+    text-align: right;
+}
+
+.empty-state {
+    margin: 0;
+    padding: 32px 16px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.placeholder {
+    padding: 40px 16px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+/* ==========================================================
+   7. Buttons (subtle 3D effect)
+   A soft top-to-bottom gradient, a thin light line on top
+   (inset shadow) and a small drop shadow make the button look
+   slightly raised. Hover lifts it, clicking presses it down.
+   ========================================================== */
+.btn {
+    padding: 10px 18px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.25),
+        0 2px 3px rgba(16, 24, 40, 0.15);
+    transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.1s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.04);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.25),
+        0 4px 8px rgba(16, 24, 40, 0.18);
+}
+
+.btn:active {
+    transform: translateY(1px);
+    box-shadow:
+        inset 0 1px 2px rgba(0, 0, 0, 0.15),
+        0 1px 1px rgba(16, 24, 40, 0.12);
+}
+
+.btn:focus-visible {
+    outline: 3px solid rgba(59, 111, 224, 0.4);
+    outline-offset: 2px;
+}
+
+.btn-primary {
+    color: #ffffff;
+    background: linear-gradient(to bottom, var(--accent), var(--accent-dark));
+    border-color: var(--accent-dark);
+}
+
+.btn-secondary {
+    color: var(--text);
+    background: linear-gradient(to bottom, var(--surface), var(--surface-muted));
+    border-color: var(--border);
+}
+
+.btn-danger {
+    color: #ffffff;
+    background: linear-gradient(to bottom, var(--danger), var(--danger-dark));
+    border-color: var(--danger-dark);
+}
+
+.btn-sm {
+    padding: 5px 12px;
+    font-size: 0.85rem;
+}
+
+#theme-toggle {
+    padding: 6px 10px;
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+/* ==========================================================
+   8. Small screens
+   ========================================================== */
+/* Tablets and phones: stack the two columns, form and table first */
+@media (max-width: 760px) {
+    .expenses-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-card {
+        order: 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .navbar {
+        flex-wrap: wrap;
+        padding: 12px 16px;
+    }
+
+    /* "display: contents" makes the wrapper act as if it isn't there,
+       so the brand, tabs and toggle can be arranged individually. */
+    .nav-left {
+        display: contents;
+    }
+
+    /* Tabs move to their own full-width row under the brand, without the divider */
+    .nav-tabs {
+        order: 3;
+        width: 100%;
+        overflow-x: auto;
+        padding-left: 0;
+        border-left: none;
+    }
+
+    .expense-form {
+        flex-direction: column;
+    }
+
+    .expense-table th,
+    .expense-table td {
+        padding: 10px 12px;
+    }
+
+    .col-amount .row-input {
+        min-width: 70px;
+        max-width: 90px;
+    }
+
+    .page-header .container {
+        padding-top: 22px;
+        padding-bottom: 22px;
+    }
+}
