@@ -33,9 +33,12 @@ function validateExpense(name, amount) {
     return true;
 }
 
-// Turns 4.5 into "$4.50".
+// Turns 4.5 into "$4.50" and 2225 into "$2,225.00".
 function formatAmount(amount) {
-    return "$" + Number(amount).toFixed(2);
+    return "$" + Number(amount).toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
 }
 
 // Finds the expense with the given id in the array.
