@@ -1,0 +1,22 @@
+# Runs a quick syntax check on the app's JavaScript.
+# It catches code that is too broken to run (missing brackets, typos in keywords),
+# not logic bugs.
+name: Check JavaScript
+
+# When to run: on every pull request, and whenever main changes.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  syntax:
+    # GitHub starts a fresh Linux machine for each run. Node.js is already installed on it.
+    runs-on: ubuntu-latest
+    steps:
+      # Copy this project's code onto that machine.
+      - uses: actions/checkout@v7
+
+      # Read script.js and fail if it contains a syntax error. Nothing is run or installed.
+      - name: Check script.js for syntax errors
+        run: node --check script.js
